@@ -1,0 +1,4 @@
+*.zip
+*.tar
+/**/*reconstruction_*
+__pycache__
