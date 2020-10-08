@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
     model = model.to(device)
     model.eval()
-
+    print("Printing ARGS.COLOR", args)
     reconstructor = ImageReconstructor(model, height, width, model.num_bins, args)
 
     """ Read chunks of events using Pandas """
@@ -87,26 +87,26 @@ if __name__ == "__main__":
     else:
         event_window_iterator = FixedSizeEventReader(path_to_events, num_events=N, start_index=start_index)
 
-    with Timer('Processing entire dataset'):
-        for event_window in event_window_iterator:
+    # with Timer('Processing entire dataset'):
+    for event_window in event_window_iterator:
 
-            last_timestamp = event_window[-1, 0]
+        last_timestamp = event_window[-1, 0]
 
-            with Timer('Building event tensor'):
-                if args.compute_voxel_grid_on_cpu:
-                    event_tensor = events_to_voxel_grid(event_window,
+        # with Timer('Building event tensor'):
+        if args.compute_voxel_grid_on_cpu:
+            event_tensor = events_to_voxel_grid(event_window,
+                                                num_bins=model.num_bins,
+                                                width=width,
+                                                height=height)
+            event_tensor = torch.from_numpy(event_tensor)
+        else:
+            event_tensor = events_to_voxel_grid_pytorch(event_window,
                                                         num_bins=model.num_bins,
                                                         width=width,
-                                                        height=height)
-                    event_tensor = torch.from_numpy(event_tensor)
-                else:
-                    event_tensor = events_to_voxel_grid_pytorch(event_window,
-                                                                num_bins=model.num_bins,
-                                                                width=width,
-                                                                height=height,
-                                                                device=device)
+                                                        height=height,
+                                                        device=device)
 
-            num_events_in_window = event_window.shape[0]
-            reconstructor.update_reconstruction(event_tensor, start_index + num_events_in_window, last_timestamp)
+        num_events_in_window = event_window.shape[0]
+        reconstructor.update_reconstruction(event_tensor, start_index + num_events_in_window, last_timestamp)
 
-            start_index += num_events_in_window
+        start_index += num_events_in_window

@@ -54,7 +54,7 @@ class FixedDurationEventReader:
             self.event_file = open(path_to_event_file, 'r')
 
         # ignore header + the first start_index lines
-        for i in range(1 + start_index):
+        for _ in range(1 + start_index):
             self.event_file.readline()
 
         self.last_stamp = None

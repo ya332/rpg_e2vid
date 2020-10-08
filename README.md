@@ -1,5 +1,8 @@
 # High Speed and High Dynamic Range Video with an Event Camera
 
+
+https://colab.research.google.com/drive/13ramdof9gE-BnAM6SW2t5r-1cRN9k7pm#scrollTo=9yUYz6156juL
+
 [![High Speed and High Dynamic Range Video with an Event Camera](http://rpg.ifi.uzh.ch/E2VID/video_thumbnail.png)](https://youtu.be/eomALySSGVU)
 
 This is the code for the paper **High Speed and High Dynamic Range Video with an Event Camera** by [Henri Rebecq](http://henri.rebecq.fr), Rene Ranftl, [Vladlen Koltun](http://vladlen.info/) and [Davide Scaramuzza](http://rpg.ifi.uzh.ch/people_scaramuzza.html):
@@ -72,12 +75,7 @@ conda activate E2VID
 - Run reconstruction:
 
 ```bash
-python run_reconstruction.py \
-  -c pretrained/E2VID_lightweight.pth.tar \
-  -i data/dynamic_6dof.zip \
-  --auto_hdr \
-  --display \
-  --show_events
+python run_reconstruction.py -c pretrained/E2VID_lightweight.pth.tar -i data/dynamic_6dof.zip --color
 ```
 
 ## Parameters
